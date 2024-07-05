@@ -1,0 +1,230 @@
+{
+  "_version": "1.59.0",
+  "sap.app": {
+    "id": "travel.travelapp",
+    "type": "application",
+    "i18n": "i18n/i18n.properties",
+    "applicationVersion": {
+      "version": "0.0.1"
+    },
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "resources": "resources.json",
+    "sourceTemplate": {
+      "id": "@sap/generator-fiori:lrop",
+      "version": "1.14.0",
+      "toolsId": "f877bef2-9f48-40ba-ad16-dcb5b61e563e"
+    },
+    "dataSources": {
+      "mainService": {
+        "uri": "/sap/opu/odata4/sap/zsp_sb_travel_m_ui_v4/srvd/sap/zsp_sd_travel_m/0001/",
+        "type": "OData",
+        "settings": {
+          "annotations": [
+            "annotation"
+          ],
+          "localUri": "localService/metadata.xml",
+          "odataVersion": "4.0"
+        }
+      },
+      "annotation": {
+        "type": "ODataAnnotation",
+        "uri": "annotations/annotation.xml",
+        "settings": {
+          "localUri": "annotations/annotation.xml"
+        }
+      }
+    }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "icons": {
+      "icon": "",
+      "favIcon": "",
+      "phone": "",
+      "phone@2": "",
+      "tablet": "",
+      "tablet@2": ""
+    },
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
+  },
+  "sap.ui5": {
+    "flexEnabled": true,
+    "dependencies": {
+      "minUI5Version": "1.121.6",
+      "libs": {
+        "sap.m": {},
+        "sap.ui.core": {},
+        "sap.ushell": {},
+        "sap.fe.templates": {},
+        "sap.f": {}
+      }
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleName": "travel.travelapp.i18n.i18n"
+        }
+      },
+      "": {
+        "dataSource": "mainService",
+        "preload": true,
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true
+        }
+      },
+      "@i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "uri": "i18n/i18n.properties"
+      }
+    },
+    "resources": {
+      "css": []
+    },
+    "routing": {
+      "config": {
+        "flexibleColumnLayout": {
+          "defaultTwoColumnLayoutType": "TwoColumnsMidExpanded",
+          "defaultThreeColumnLayoutType": "ThreeColumnsEndExpanded"
+        },
+        "routerClass": "sap.f.routing.Router"
+      },
+      "routes": [
+        {
+          "pattern": ":?query:",
+          "name": "ZC_TRAVEL_SP_MList",
+          "target": [
+            "ZC_TRAVEL_SP_MList"
+          ]
+        },
+        {
+          "pattern": "ZC_TRAVEL_SP_M({key}):?query:",
+          "name": "ZC_TRAVEL_SP_MObjectPage",
+          "target": [
+            "ZC_TRAVEL_SP_MList",
+            "ZC_TRAVEL_SP_MObjectPage"
+          ]
+        },
+        {
+          "pattern": "ZC_TRAVEL_SP_M({key})/_Booking({key2}):?query:",
+          "name": "ZC_TRAVEL_SP_M__BookingObjectPage",
+          "target": [
+            "ZC_TRAVEL_SP_MList",
+            "ZC_TRAVEL_SP_MObjectPage",
+            "ZC_TRAVEL_SP_M__BookingObjectPage"
+          ]
+        },
+        {
+          "pattern": "ZC_TRAVEL_SP_M({key})/_Booking({key2})/_BookingSupplement({key3}):?query:",
+          "name": "ZC_TRAVEL_SP_M__Booking__BookingSupplementObjectPage",
+          "target": [
+            "ZC_TRAVEL_SP_M__Booking__BookingSupplementObjectPage"
+          ]
+        }
+      ],
+      "targets": {
+        "ZC_TRAVEL_SP_MList": {
+          "type": "Component",
+          "id": "ZC_TRAVEL_SP_MList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "contextPath": "/ZC_TRAVEL_SP_M",
+              "variantManagement": "Page",
+              "navigation": {
+                "ZC_TRAVEL_SP_M": {
+                  "detail": {
+                    "route": "ZC_TRAVEL_SP_MObjectPage"
+                  }
+                }
+              },
+              "controlConfiguration": {
+                "@com.sap.vocabularies.UI.v1.LineItem": {
+                  "tableSettings": {
+                    "type": "ResponsiveTable"
+                  }
+                }
+              },
+              "initialLoad": "Enabled"
+            }
+          },
+          "controlAggregation": "beginColumnPages",
+          "contextPattern": ""
+        },
+        "ZC_TRAVEL_SP_MObjectPage": {
+          "type": "Component",
+          "id": "ZC_TRAVEL_SP_MObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "editableHeaderContent": false,
+              "contextPath": "/ZC_TRAVEL_SP_M",
+              "navigation": {
+                "_Booking": {
+                  "detail": {
+                    "route": "ZC_TRAVEL_SP_M__BookingObjectPage"
+                  }
+                }
+              }
+            }
+          },
+          "controlAggregation": "midColumnPages",
+          "contextPattern": "/ZC_TRAVEL_SP_M({key})"
+        },
+        "ZC_TRAVEL_SP_M__BookingObjectPage": {
+          "type": "Component",
+          "id": "ZC_TRAVEL_SP_M__BookingObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "contextPath": "/ZC_TRAVEL_SP_M/_Booking",
+              "navigation": {
+                "_BookingSupplement": {
+                  "detail": {
+                    "route": "ZC_TRAVEL_SP_M__Booking__BookingSupplementObjectPage"
+                  }
+                }
+              }
+            }
+          },
+          "controlAggregation": "endColumnPages",
+          "contextPattern": "/ZC_TRAVEL_SP_M({key})/_Booking({key2})"
+        },
+        "ZC_TRAVEL_SP_M__Booking__BookingSupplementObjectPage": {
+          "type": "Component",
+          "id": "ZC_TRAVEL_SP_M__Booking__BookingSupplementObjectPage",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": {
+            "settings": {
+              "contextPath": "/ZC_TRAVEL_SP_M/_Booking/_BookingSupplement",
+              "navigation": {}
+            }
+          },
+          "controlAggregation": "endColumnPages",
+          "contextPattern": "/ZC_TRAVEL_SP_M({key})/_Booking({key2})/_BookingSupplement({key3})"
+        }
+      }
+    },
+    "rootView": {
+      "viewName": "sap.fe.templates.RootContainer.view.Fcl",
+      "type": "XML",
+      "async": true,
+      "id": "appRootView"
+    }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  }
+}
